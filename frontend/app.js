@@ -70,7 +70,11 @@ function navigate(page, symbol) {
   state.page = page;
   state.symbol = symbol || null;
   window.scrollTo(0, 0);
-  render();
+  if (page === 'detail' && symbol) {
+    loadDetail(symbol);
+  } else {
+    render();
+  }
 }
 
 // ===== HELPERS =====
@@ -205,14 +209,17 @@ function SignalCard(sig) {
 
 // ===== STOCK DETAIL =====
 async function loadDetail(symbol) {
-  state.loading = true; render();
+  state.loading = true;
+  state.detailSignal = null;
+  state.detailStock = null;
+  state.detailSMC = null;
+  state.detailFlow = null;
+  state.detailSection = 'overview';
+  render();
   try {
     const [sr, kr] = await Promise.all([api.getUnifiedSignal(symbol), api.getStock(symbol)]);
     state.detailSignal = sr.success ? sr.data : null;
     state.detailStock = kr.success ? kr.data : null;
-    state.detailSMC = null;
-    state.detailFlow = null;
-    state.detailSection = 'overview';
   } catch (e) { console.error(e); }
   state.loading = false; render();
 }
