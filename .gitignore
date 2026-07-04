@@ -1,0 +1,11 @@
+node_modules/
+.env
+.token.json
+.predictions.json
+.kmi30-predictions.json
+.orderflow.json
+.alerts.json
+.predict-state.json
+dist/
+*.log
+.DS_Store
